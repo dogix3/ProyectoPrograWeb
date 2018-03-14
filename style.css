@@ -42,7 +42,7 @@ td button:hover{
     background-color:#efeded;
 }
 
-input, textarea {
+input, textarea, select{
     /* Para asegurarse de que todos los campos de texto tienen las mismas propiedades de fuente
        Por defecto, las areas de texto tienen una fuente con monospace */
     font: 0.8em sans-serif;
@@ -99,4 +99,9 @@ tr:nth-child(odd) td {
 
 caption {
   padding: 10px;
+}
+
+select {
+ background: transparent;
+ border: none;
 }
