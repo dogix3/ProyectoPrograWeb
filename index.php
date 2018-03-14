@@ -3,17 +3,18 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Manejo de archivos</title>
+	<link href="style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 	<main>
 		<div id="register">
 			<h3>Registro de usuarios</h3>
 			<form action="" method="post" id="form_register">
-				<span>Nombre</span><input type="text">
-				<span>Apellido</span><input type="text">
-				<span>Cuenta</span><input type="text">
-				<span>Contraseña</span><input type="password">
-				<span>Confirmar contraseña</span><input type="password">
+				<input type="text" placeholder="Nombre">
+				<input type="text" placeholder="Apellido">
+				<input type="text" placeholder="Cuenta">
+				<input type="password" placeholder="Contraseña">
+				<input type="password" placeholder="Confirme la Contraseña">
 			</form>
 		</div>
 		<div id="login">
@@ -21,21 +22,21 @@
 			<form action="" method="post" id="form_login">
 				<input type="text" name="txtUsername">
 				<input type="password" name="txtPassword">
-				<input type="submit" name="btnLogin">
+				<input class="btn" type="submit" name="btnLogin">
 			</form>
 		</div>
 		<div id="busqueda">
 			<h3>Busqueda mediante nombre</h3>
 			<form action="" method="post" id="form_search">
 				<input type="text" name="txtSearch">
-				<input type="submit" name="btnSearch">
+				<input class="btn" type="submit" name="btnSearch">
 			</form>
 		</div>
 		<div id="manejo_archivos">
 			<h3>Manejo de archivos</h3>
 			<form enctype="multipart/form-data" method="post" action="">
 			 	<span>Seleccione archivo</span><input name="btnSelectFile" type="file" />
-			 	<input type="submit" value="Send File" name="btnUploadFile" />
+			 	<input class="btn" type="submit" value="Send File" name="btnUploadFile" />
 			</form>
 			<form action="" method="post">
 				<table id="files_details">
@@ -88,7 +89,7 @@
 				<select name="" id="">
 					<option value="1">opcion 1</option>
 				</select>
-				<input type="submit" name="btnShare">
+				<input class="btn" type="submit" name="btnShare">
 			</form>
 		</div>
 	</main>
