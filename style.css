@@ -1,6 +1,7 @@
 html{
 	font-family: sans-serif;
     font-size: 1em;
+    padding: 0.5em;
 }
 h3{
 	text-align: center;
@@ -53,9 +54,14 @@ input, textarea, select{
     /* Para armonizar el look&feel del borde en los campos de texto */
     border: 1px solid #999;
     height: 1.6em;
+    padding-left: 0.2em;
 }
 
-#register, #login{
+.btn_buscar{
+    width: 119px;
+}
+
+#register, #login, #compartir{
 	/* Sólo para centrar el formulario a la página */
     margin: 0 auto;
     width: 300px;
@@ -104,4 +110,16 @@ caption {
 select {
  background: transparent;
  border: none;
+}
+
+#form_login, #busqueda{
+    text-align: right;
+}
+
+.txt_search #lbl_search{
+    text-align: left;
+}
+
+a{
+    font-size: 0.8em;
 }
