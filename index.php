@@ -374,12 +374,13 @@
 	<meta charset="UTF-8">
 	<title>Manejo de archivos</title>
 	<link href="style.css" rel="stylesheet" type="text/css">
+
 </head>
 <body>
 	<main>
 	<?php if ($action == "register"):  ?>
 		<div id="register">
-			<h3>Registro de usuarios</h3>
+			<h3>Registro de Usuarios</h3>
 			<form action="" method="post" id="form_register">
 				<input type="text" name="txtNombre" placeholder="Nombre">
 				<input type="text" name="txtApellido" placeholder="Apellido">
@@ -409,14 +410,28 @@
 				<input value="Cerrar sesión" class="btn btn_delete" type="submit" name="btnLogout">
 			</form>
 		</div><br>
-		<h3 class="titulo3">Manejo de Archivos</h3>
+		<h2 class="titulo3">Manejo de Archivos</h2>
 		<div id="manejo_archivos">
 			<div id="busqueda">
 				<form action="" method="post" id="form_search">
-					<input type="text" name="txtSearch" placeholder="Ingrese un nombre">
-					<input class="btn btn_buscar" type="submit" name="btnSearch">
+					<input class="search" type="text" name="txtSearch" placeholder="Ingrese un nombre">
+					<input class="btn btn_buscar" type="submit" name="btnSearch" value="Buscar">
 				</form>
-			</div><br>
+			</div>
+			<div class="frm_add">
+				<p>Agregar Archivos</p>
+				<form enctype="multipart/form-data" method="post" action="" id="form_upload_file">
+				 	<input class="form_input" type="text" name="txtFileName" placeholder="Nombre de archivo">
+				 	<input class="form_input" type="text" name="txtAuthor" placeholder="Autor">
+				 	<input class="form_input" type="text" name="txtDescripcion" placeholder="Descripción">
+				 	<input class="form_input" type="text" name="txtFileClasification" placeholder="Clasificación">
+				 	<input class="form_input" id="selectFile" type="file" name="btnSelectFile" accept=".xlsx, .xls"/>
+				 	<div class="div_add">
+				 		<input class="btn btn_add" type="submit" value="Subir archivo" name="btnSubmitFormFile" />
+				 	</div>
+				 	<div class="mensaje"><?php echo $mensaje; ?></div><br>
+				</form>
+			</div>
 			<div class="frm_table">
 				<p>Mis Archivos</p>
 				<form action="" method="post" id="form_table">
@@ -441,18 +456,6 @@
 					</table>
 				</form>
 			</div>
-			<div class="frm_add">
-				<p>Agregar Archivos</p>
-				<form enctype="multipart/form-data" method="post" action="" id="form_upload_file">
-				 	<input type="text" name="txtFileName" placeholder="Nombre de archivo">
-				 	<input type="text" name="txtAuthor" placeholder="Autor">
-				 	<input type="text" name="txtDescripcion" placeholder="Descripción">
-				 	<input type="text" name="txtFileClasification" placeholder="Clasificación">
-				 	<input id="selectFile" type="file" name="btnSelectFile" accept=".xlsx, .xls"/>
-				 	<input class="btn" type="submit" value="Subir archivo" name="btnSubmitFormFile" />
-				 	<div class="mensaje"><?php echo $mensaje; ?></div>
-				</form>
-			</div>
 		</div>
 	<?php elseif ($action == "help"): ?>
 		<div id="ayuda">
@@ -460,16 +463,17 @@
 		</div>
 	<?php endif ?>
 	<?php if ($share): ?>
-		<div id="myModal" class="modal">
-		  	<!-- Modal content -->
-			<div class="modal-content">
-		    	<h3>Compartir archivo</h3>
+		<div id="openModal" class="modalDialog">
+			<div class="divModal">
+				<h3>Compartir Archivo</h3>
 				<form action="" method="post" id="form_share">
 					<select name="cmbUserName" id="">
 						<?php echo getUserNames(); ?>
-					</select>
-					<input class="btn" type="submit" name="btnShare" value="Compartir">
-					<input class="btn" type="submit" value="Cancelar">
+					</select><br><br>
+					<div class="btn_modal">
+						<input type="submit" name="btnShare" value="Compartir">
+						<input class="btn_cancelar" type="submit" value="Cancelar">
+					</div>
 				</form>
 			</div>
 		</div>

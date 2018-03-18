@@ -23,7 +23,7 @@ h3{
     background-color:#449d44;
 }
 
-td button{
+td button, .btn_modal input{
     border:1px solid #cccccc;
     background-color:#ffffff;
     text-shadow:0px 1px 0px #ffffff;
@@ -42,7 +42,7 @@ td button{
     background-color:#D2322D;
 }
 
-td button:hover{
+td button:hover, .btn_modal input:hover{
     background-color:#efeded;
 }
 
@@ -60,7 +60,7 @@ input, textarea, select{
     padding-left: 0.2em;
 }
 
-.btn_buscar, .btn_delete, .btn_share{
+.btn_buscar, .btn_delete, .btn_share, .btn_add{
     width: 119px;
 }
 
@@ -68,9 +68,9 @@ input, textarea, select{
     border: none;
 }
 
-#register, #login, #compartir {
+#register, #login{
 	/* Sólo para centrar el formulario a la página */
-    margin: 0 auto;
+    margin: 15% auto;
     width: 300px;
     /* Para ver el borde del formulario */
     padding: 1.5em;
@@ -86,8 +86,11 @@ input, textarea, select{
 }
 
 #form_table, #form_upload_file{
-    padding: 15px;
     padding-top: 0;
+}
+
+#form_table{
+    padding: 10px;
 }
 
 .frm_table p, .frm_add p{
@@ -97,14 +100,16 @@ input, textarea, select{
     background-color: #F5F5F5;
 }
 
-#form_upload_file{
-    width: 300px;
-}
 #form_upload_file input{
     margin-top: 1em;
+    margin-left: 1em;
 }
 
-#form_register input, #form_login input{
+.form_input{
+    width: 600px;
+}
+
+#form_register input, #form_login input, #form_share input{
 	margin-top: 1em;
 }
 
@@ -146,7 +151,7 @@ select {
  border: none;
 }
 
-#form_login, #busqueda, #logout{
+#form_login, #busqueda, #logout, .div_add{
     text-align: right;
 }
 
@@ -162,3 +167,90 @@ select {
 a{
     font-size: 0.8em;
 }
+
+.modalDialog {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0,0,0,0.8);
+}
+.divModal {
+    text-align: center;
+    width: 400px;
+    height: 160px;
+    position: relative;
+    margin: 10% auto;
+    padding: 5px 0 5px 0;
+    background-color: white;
+}
+
+.btn_modal input{
+    width: 150px;
+}
+
+@media screen and (min-width: 800px) and (max-width: 1400px) {   
+    html{  
+        padding: 0;
+        margin: 0;
+    }  
+    #form_upload_file{
+        width: 100%;
+        padding: 0;
+        margin: 0;
+    }
+    #form_upload_file input{
+        margin-top: 0.5em;
+        margin-right: 0.3em;
+        margin-left: 0.3em;
+        margin-bottom: 0.7em;
+    } 
+
+    .form_input{
+        width: 48%;
+    }
+
+    .frm_table p, .frm_add p{
+        border-right: 1px solid #CCC;
+        border-left: 1px solid #CCC;
+    }
+} 
+
+@media screen and (min-width: 100px) and (max-width: 800px) {   
+    html{  
+        padding: 0;
+        margin: 0;
+    }  
+    #form_upload_file input{
+        margin-top: 0.5em;
+        margin-right: 0.7em;
+        margin-left: 0.5em;
+        margin-bottom: 0.7em;
+    } 
+    .div_add{
+        width: 100%;
+        margin:0.2em;
+    }
+
+    .form_input{
+        width: 97%;
+    }
+    .frm_table p, .frm_add p{
+        border-right: 1px solid #CCC;
+        border-left: 1px solid #CCC;
+    }
+    .divModal {
+        width: 100%;
+        height: 200px;
+    }
+
+    .btn_modal input{
+        width: 100%;
+    }
+
+    .btn_modal{
+        padding-left: 2em;
+        padding-right: 2em;
+    }
+} 
