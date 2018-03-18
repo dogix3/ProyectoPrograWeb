@@ -204,7 +204,7 @@
 						 					<td>$datos_lista[5]</td>
 						 					<td>$datos_lista[6]</td>
 						 					<td><button class='btn_delete' name='btnDeleteFile' value='$datos_lista[0]'>Eliminar</button></td>
-											<td><button name='btnShareFile' value='$datos_lista[0]'>Compartir</button></td>
+											<td><button class='btn_share' name='btnShareFile' value='$datos_lista[0]'>Compartir</button></td>
 						 				</tr>";
 							}
 							
@@ -393,7 +393,7 @@
 		</div>
 	<?php elseif ($action == "login"): ?>
 		<div id="login">
-			<h3>Inicio de sesion</h3>
+			<h3>Inicio de Sesion</h3>
 			<form action="" method="post" id="form_login">
 				<input type="text" name="txtUsername" placeholder="Nombre de Usuario">
 				<input type="password" name="txtPassword" placeholder="Contraseña">
@@ -403,48 +403,56 @@
 			<div class="mensaje"><?php echo $mensaje; ?></div>
 		</div>
 	<?php elseif ($action == "upload"): ?>
-		<div id="manejo_archivos">
-			<h3>Manejo de archivos</h3>
+		<div id="logout">
 			<form action="" method="post" id="form_logout">
-				<span>Bienvenido <?php echo $_SESSION['firtsName'] ." ". $_SESSION['lastName']?></span>
+				<span style="font-weight: bold">Bienvenido: </span><span><?php echo $_SESSION['firtsName'] ." ". $_SESSION['lastName']?></span>
 				<input value="Cerrar sesión" class="btn btn_delete" type="submit" name="btnLogout">
 			</form>
+		</div><br>
+		<h3 class="titulo3">Manejo de Archivos</h3>
+		<div id="manejo_archivos">
 			<div id="busqueda">
 				<form action="" method="post" id="form_search">
 					<input type="text" name="txtSearch" placeholder="Ingrese un nombre">
 					<input class="btn btn_buscar" type="submit" name="btnSearch">
 				</form>
 			</div><br>
-			<form enctype="multipart/form-data" method="post" action="" id="form_upload_file">
-			 	<input type="file" name="btnSelectFile" accept=".xlsx, .xls"/>
-			 	<input type="text" name="txtFileName" placeholder="Nombre de archivo">
-			 	<input type="text" name="txtAuthor" placeholder="Autor">
-			 	<input type="text" name="txtDescripcion" placeholder="Descripción">
-			 	<input type="text" name="txtFileClasification" placeholder="Clasificación">
-			 	<input class="btn" type="submit" value="Subir archivo" name="btnSubmitFormFile" />
-			 	<div class="mensaje"><?php echo $mensaje; ?></div>
-			</form>
-			<form action="" method="post" id="form_table">
-				<table id="files_details">
-					<thead>
-						<tr>
-							<th>Nombre</th>
-							<th>Autor</th>
-							<th>Fecha subido</th>
-							<th>Tamaño</th>
-							<th>Propietario</th>
-							<th>Descripción</th>
-							<th>Clasificación</th>
-							<th>Eliminar</th>
-							<th>Compartir</th>
-						</tr>
-					</thead>
-					<tbody>
-						<?php echo readFileData(); ?>
-						<?php echo readSharedFileData(); ?>
-					</tbody>
-				</table>
-			</form>
+			<div class="frm_table">
+				<p>Mis Archivos</p>
+				<form action="" method="post" id="form_table">
+					<table id="files_details">
+						<thead>
+							<tr>
+								<th>Nombre</th>
+								<th>Autor</th>
+								<th>Fecha subido</th>
+								<th>Tamaño</th>
+								<th>Propietario</th>
+								<th>Descripción</th>
+								<th>Clasificación</th>
+								<th>Eliminar</th>
+								<th>Compartir</th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php echo readFileData(); ?>
+							<?php echo readSharedFileData(); ?>
+						</tbody>
+					</table>
+				</form>
+			</div>
+			<div class="frm_add">
+				<p>Agregar Archivos</p>
+				<form enctype="multipart/form-data" method="post" action="" id="form_upload_file">
+				 	<input type="text" name="txtFileName" placeholder="Nombre de archivo">
+				 	<input type="text" name="txtAuthor" placeholder="Autor">
+				 	<input type="text" name="txtDescripcion" placeholder="Descripción">
+				 	<input type="text" name="txtFileClasification" placeholder="Clasificación">
+				 	<input id="selectFile" type="file" name="btnSelectFile" accept=".xlsx, .xls"/>
+				 	<input class="btn" type="submit" value="Subir archivo" name="btnSubmitFormFile" />
+				 	<div class="mensaje"><?php echo $mensaje; ?></div>
+				</form>
+			</div>
 		</div>
 	<?php elseif ($action == "help"): ?>
 		<div id="ayuda">
