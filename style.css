@@ -46,6 +46,10 @@ td button:hover, .btn_modal input:hover{
     background-color:#efeded;
 }
 
+.ayuda{
+    cursor: pointer;
+}
+
 input, textarea, select{
     /* Para asegurarse de que todos los campos de texto tienen las mismas propiedades de fuente
        Por defecto, las areas de texto tienen una fuente con monospace */
@@ -93,7 +97,7 @@ input, textarea, select{
     padding: 10px;
 }
 
-.frm_table p, .frm_add p{
+.frm_table p, .frm_add p {
     padding: 7px;
     border-top: 1px solid #CCC;
     border-bottom: 1px solid #CCC;
@@ -155,11 +159,11 @@ select {
     text-align: right;
 }
 
-.txt_search #lbl_search, .titulo3{
+.txt_search #lbl_search, .t{
     text-align: left;
 }
 
-.titulo3{
+.titulo{
     padding-bottom: 0.5px;
     border-bottom: 1px solid #CCC;
 }
@@ -177,14 +181,29 @@ a{
     background: rgba(0,0,0,0.8);
 }
 .divModal {
-    text-align: center;
-    width: 400px;
-    height: 160px;
     position: relative;
     margin: 10% auto;
     padding: 5px 0 5px 0;
     background-color: white;
 }
+.modalCompartir {
+    text-align: center;
+    width: 400px;
+    height: 160px;
+}
+
+.modalAyuda{
+    width: 500px;
+    padding-right: 10px;
+    padding-left: 10px;
+    text-align: center;
+}
+
+.modalAdd{
+    height: 260px;
+}
+
+
 
 .btn_modal input{
     width: 150px;
@@ -241,8 +260,14 @@ a{
         border-left: 1px solid #CCC;
     }
     .divModal {
-        width: 100%;
+        width: 90%;
+    }
+    .modalCompartir{
         height: 200px;
+    }
+
+    .modalFiles{
+        height: 580px;
     }
 
     .btn_modal input{
@@ -254,3 +279,35 @@ a{
         padding-right: 2em;
     }
 } 
+
+.modalDialog2{
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0,0,0,0.8);
+    opacity:0;
+    pointer-events: none;
+}
+.modalDialog2:target {
+    opacity:1;
+    pointer-events: auto;
+}
+
+.close {
+    background: #606061;
+    color: #FFFFFF;
+    line-height: 25px;
+    position: absolute;
+    right: -12px;
+    text-align: center;
+    top: -10px;
+    width: 24px;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 12px;
+}
+.close:hover { 
+    background: #D2322D; 
+}

@@ -406,11 +406,11 @@
 	<?php elseif ($action == "upload"): ?>
 		<div id="logout">
 			<form action="" method="post" id="form_logout">
-				<span style="font-weight: bold">Bienvenido: </span><span><?php echo $_SESSION['firtsName'] ." ". $_SESSION['lastName']?></span>
+				<span style="font-weight: bold">Bienvenido(a): </span><span><?php echo $_SESSION['firtsName'] ." ". $_SESSION['lastName']?></span>
 				<input value="Cerrar sesión" class="btn btn_delete" type="submit" name="btnLogout">
 			</form>
 		</div><br>
-		<h2 class="titulo3">Manejo de Archivos</h2>
+		<h2 class="t titulo">Manejo de Archivos</h2>
 		<div id="manejo_archivos">
 			<div id="busqueda">
 				<form action="" method="post" id="form_search">
@@ -419,7 +419,8 @@
 				</form>
 			</div>
 			<div class="frm_add">
-				<p>Agregar Archivos</p>
+				<p>Agregar Archivos<span class="ayuda">   <a href="#openHelpAdd"><img src="help.png"/></a></span></p>
+
 				<form enctype="multipart/form-data" method="post" action="" id="form_upload_file">
 				 	<input class="form_input" type="text" name="txtFileName" placeholder="Nombre de archivo">
 				 	<input class="form_input" type="text" name="txtAuthor" placeholder="Autor">
@@ -433,7 +434,7 @@
 				</form>
 			</div>
 			<div class="frm_table">
-				<p>Mis Archivos</p>
+				<p>Mis Archivos<span class="ayuda">   <a href="#openHelpFiles"><img src="help.png"/></a></span></p>
 				<form action="" method="post" id="form_table">
 					<table id="files_details">
 						<thead>
@@ -459,12 +460,12 @@
 		</div>
 	<?php elseif ($action == "help"): ?>
 		<div id="ayuda">
-			
+		</div>
 		</div>
 	<?php endif ?>
 	<?php if ($share): ?>
 		<div id="openModal" class="modalDialog">
-			<div class="divModal">
+			<div class="divModal modalCompartir">
 				<h3>Compartir Archivo</h3>
 				<form action="" method="post" id="form_share">
 					<select name="cmbUserName" id="">
@@ -478,6 +479,29 @@
 			</div>
 		</div>
 	<?php endif ?>
+
+	<div id="openHelpAdd" class="modalDialog2">
+		<div class="divModal modalAyuda modalAdd">
+			<a href="#close" title="Close" class="close">X</a>
+			<h2 class="titulo">Agregar Archivos</h2>
+			<p>Esta sección es para subir un nuevo archivo.</p>
+			<span style="font-weight: bold">¿Cómo agrego un nuevo archivo?</span><p>Solo debes llenar la información solicitada en cada uno de los cuadros, seleccionar el archivo deseado y presionar subir archivo.</p>
+			<p><span style="font-weight: bold">Importante:</span> Recuerda que solo puedes subir archivos de Excel</p>
+		</div>
+	</div>
+	<div id="openHelpFiles" class="modalDialog2">
+		<div class="divModal modalAyuda modalFiles">
+			<a href="#close" title="Close" class="close">X</a>
+			<h2 class="titulo">Mis Archivos</h2>
+			<p>En esta sección puedes ver los archivos que has subido y los que han compartido contigo. También puedes eliminar o compartir un archivo.</p>
+			<span style="font-weight: bold">¿Cómo elimino un archivo?</span><p>Solo debes presionar el botón de eliminar que se encuentra disponible en la misma línea del archivo que deseas eliminar.</p>
+			<p><span style="font-weight: bold">Importante:</span> Recuerda que debes presionar el botón que se encuentra en la misma fila del archivo deseado.</p>
+
+			<span style="font-weight: bold">¿Cómo comparto un archivo?</span><p>Solo debes presionar el botón de compartir que se encuentra disponible en la misma línea del archivo que deseas compartir.</p>
+			<p><span style="font-weight: bold">Importante:</span> Recuerda que debes presionar el botón que se encuentra en la misma fila del archivo deseado.<br>
+			Solo puedes compartir los archivos que has subido, por lo que NO puedes compartir los archivos que han sido compartidos contigo.</p>
+		</div>
+	</div>
 	</main>
 </body>
 </html>
