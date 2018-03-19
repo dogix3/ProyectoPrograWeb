@@ -380,7 +380,7 @@
 	<main>
 	<?php if ($action == "register"):  ?>
 		<div id="register">
-			<h3>Registro de Usuarios</h3>
+			<h3>Registrarse<span class="ayuda">   <a href="#openHelpRegister"><img src="help.png"/></a></span></h3>
 			<form action="" method="post" id="form_register">
 				<input type="text" name="txtNombre" placeholder="Nombre">
 				<input type="text" name="txtApellido" placeholder="Apellido">
@@ -399,7 +399,7 @@
 				<input type="text" name="txtUsername" placeholder="Nombre de Usuario">
 				<input type="password" name="txtPassword" placeholder="Contraseña">
 				<input class="btn" type="submit" name="btnLogin" value="Iniciar Sesión">
-				<input class="btn" type="submit" name="btnLoginRegister" value="¿Desea registrarse?">
+				<input class="btn" type="submit" name="btnLoginRegister" value="¿No tienes una cuenta?">
 			</form>
 			<div class="mensaje"><?php echo $mensaje; ?></div>
 		</div>
@@ -479,7 +479,14 @@
 			</div>
 		</div>
 	<?php endif ?>
-
+	<div id="openHelpRegister" class="modalDialog2">
+		<div class="divModal modalAyuda">
+			<a href="#close" title="Close" class="close">X</a>
+			<h2 class="titulo">Registrarse</h2>
+			<p>En esta sección debe registrarse para poder ingresar al sistema</p>
+			<span style="font-weight: bold">¿Cómo me registro?</span><p>Solo debes llenar la información solicitada en cada uno de los cuadros y presionar el botón Registrarse.</p>
+		</div>
+	</div>
 	<div id="openHelpAdd" class="modalDialog2">
 		<div class="divModal modalAyuda modalAdd">
 			<a href="#close" title="Close" class="close">X</a>
