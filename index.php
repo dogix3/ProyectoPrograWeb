@@ -497,9 +497,12 @@
 			<span style="font-weight: bold">¿Cómo elimino un archivo?</span><p>Solo debes presionar el botón de eliminar que se encuentra disponible en la misma línea del archivo que deseas eliminar.</p>
 			<p><span style="font-weight: bold">Importante:</span> Recuerda que debes presionar el botón que se encuentra en la misma fila del archivo deseado.</p>
 
-			<span style="font-weight: bold">¿Cómo comparto un archivo?</span><p>Solo debes presionar el botón de compartir que se encuentra disponible en la misma línea del archivo que deseas compartir.</p>
+			<span style="font-weight: bold">¿Cómo comparto un archivo?</span><p>Solo debes presionar el botón de compartir que se encuentra disponible en la misma línea del archivo que deseas compartir.<br><br>
+			Una vez presiones el botón de Compartir, te saldrá un pequeño cuadro en el que debes seleccionar el usuario con el que deseas Compartir el archivo y presionar el botón de Compartir.<br><br>
+			Si cambias de opinión y no deseas Compartir el archivo, solo debes presionar Cancelar para regresar a la pagina principal.</p>
 			<p><span style="font-weight: bold">Importante:</span> Recuerda que debes presionar el botón que se encuentra en la misma fila del archivo deseado.<br>
-			Solo puedes compartir los archivos que has subido, por lo que NO puedes compartir los archivos que han sido compartidos contigo.</p>
+			Solo puedes compartir los archivos que has subido, por lo que NO puedes compartir los archivos que han sido compartidos contigo.<br><br>
+			Una vez hayas compartido el archivo, la única manera de quitar el acceso compartido es eliminando el archivo.</p>
 		</div>
 	</div>
 	</main>

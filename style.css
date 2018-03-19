@@ -182,7 +182,7 @@ a{
 }
 .divModal {
     position: relative;
-    margin: 10% auto;
+    margin: 5% auto;
     padding: 5px 0 5px 0;
     background-color: white;
 }
@@ -202,8 +202,6 @@ a{
 .modalAdd{
     height: 260px;
 }
-
-
 
 .btn_modal input{
     width: 150px;
@@ -267,7 +265,7 @@ a{
     }
 
     .modalFiles{
-        height: 580px;
+        height: 610px;
     }
 
     .btn_modal input{
