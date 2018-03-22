@@ -7,6 +7,8 @@
 	$mensaje = "";
 	#variable para habilitar el formulario de compartir
 	$share = false;
+	#variable para habilitar el formulario de editar
+	$isEdit = false;
 	############################################################################
 	# INICIO DONDE SE CAPTURAN LOS SUBMIR NECESARIOS PARA LLAMAR LAS FUNCIONES #
 	############################################################################
@@ -70,6 +72,36 @@
 			$mensaje = "No se selecciono a un usuario";
 		}
 	}
+	#si se ha dado click sobre el boton de buscar
+	if (isset($_POST['btnSearch'])) {
+		if (isset($_POST['txtSearch'])) {
+			$_SESSION['keyWord'] = $_POST['txtSearch'];
+		}else{
+			$mensaje = "Debe ingresar una palabra clave";
+		}
+	}
+	#si se ha dado editar sobre el boton editar de la tabla principal
+	if (isset($_POST['btnEditFile'])) {
+		$isEdit = true;
+		$_SESSION['filetoedit'] = $_POST['btnEditFile'];
+	}
+	#si se ha dado sobre el boton editar del formulario actualizar
+	if (isset($_POST['btnUpdate'])) {
+		$fileToUpdate = $_SESSION['filetoedit'];
+		if (empty($_POST['txtFileNameUpdate']) && empty($_POST['txtAuthorUpdate']) && empty($_POST['txtDescripcionUpdate']) && empty($_POST['txtFileClasificationUpdate'])) {
+			$mensaje = "No pueden haber campos vacios";
+		}else{
+			$mensaje = updateFile($fileToUpdate, $_POST['txtFileNameUpdate'], $_POST['txtAuthorUpdate'], $_POST['txtDescripcionUpdate'], $_POST['txtFileClasificationUpdate']);
+		}
+	}
+	#si se ha dado sobre el boton cancelar del formulario actualizar
+	if (isset($_POST['btnUpdateCancel'])) {
+		unset($_SESSION['filetoedit']);
+	}
+	#si se ha dado click sobre el boton de Restaurar valores
+	if (isset($_POST['btnResetSearch'])) {
+		unset($_SESSION['keyWord']);
+	}
 	#si se ha dado click sobre el boton de registro
 	if (isset($_POST['btnLoginRegister'])) {
 		$_SESSION['action'] = "register";
@@ -106,15 +138,17 @@
 	 */
 	function login($user, $password){
 		#Se comprueba si el usuario existe para iniciar session
-		$filearray = file('usersData.pff');
-		if ($filearray) {
-			while (list($num, $lin) = each($filearray)) {
-				if (isset($lin) && trim($lin)) {
-					$datosUsuario = explode("||", trim($lin));
-					if ($datosUsuario[2] == trim($user) && $datosUsuario[3] == md5($password)) {
-						$_SESSION['firtsName'] = $datosUsuario[0];
-						$_SESSION['lastName'] = $datosUsuario[1];
-						return "1";
+		if (file_exists('recursos/usersData.pff')) {
+			$filearray = file('recursos/usersData.pff');
+			if ($filearray) {
+				while (list($num, $lin) = each($filearray)) {
+					if (isset($lin) && trim($lin)) {
+						$datosUsuario = explode("||", trim($lin));
+						if ($datosUsuario[2] == trim($user) && $datosUsuario[3] == md5($password)) {
+							$_SESSION['firtsName'] = $datosUsuario[0];
+							$_SESSION['lastName'] = $datosUsuario[1];
+							return "1";
+						}
 					}
 				}
 			}
@@ -130,8 +164,8 @@
 	 */
 	function register($name, $lastName, $user, $password){
 		#Se comprueba si el usuario existe
-		if (file_exists('usersData.pff')) {
-			$filearray = file('usersData.pff');
+		if (file_exists('recursos/usersData.pff')) {
+			$filearray = file('recursos/usersData.pff');
 			if ($filearray) {
 				while (list($num, $lin) = each($filearray)) {
 					if (isset($lin) && trim($lin)) {
@@ -144,7 +178,7 @@
 			}
 		}
 		$userData = $name."||".$lastName."||".$user."||".md5($password).PHP_EOL;
-		$usersFile = fopen('usersData.pff', "a");
+		$usersFile = fopen('recursos/usersData.pff', "a");
 		fwrite($usersFile, $userData);
 		fclose($usersFile);
 		#Creación de directorio para archivos de usuario creado
@@ -167,10 +201,12 @@
 	 */
 	function writeFileData($tmpFileName, $fileName, $author, $actualDate, $fileSize, $owner, $description, $clasification, $ext){
 		#Codigo de subida del archivo
-		if (move_uploaded_file($tmpFileName, "./".$owner."/".$fileName.".".$ext)) {
+		if (file_exists("./".$owner."/".$fileName.".".$ext)) {
+			return "Ya existe un archivo con el mismo nombre";
+		}else if (move_uploaded_file($tmpFileName, "./".$owner."/".$fileName.".".$ext)) {
 			#Codigo de guardado de datos del archivo subido
 			$fileData = $fileName.".".$ext."||".$author."||".$actualDate."||".$fileSize."||".$owner."||".$description."||".$clasification.PHP_EOL;
-			$fileFile = fopen('fileData.pff', "a");
+			$fileFile = fopen('recursos/fileData.pff', "a");
 			fwrite($fileFile, $fileData);
 			fclose($fileFile);
 			return "Archivo subido satisfactoriamente";
@@ -182,12 +218,12 @@
 	 * funcion que lee los datos de los archivos subidos, pero unicamente de los que son parte del usuario
 	 * @return string retorna la tabla de datos a mostrar
 	 */
-	function readFileData(){
+	function readFileData($keyWord = null){
 		$user = $_SESSION['login'];
 		$fileList = filesByUser($user);
 		$tabla = "";
-		if (file_exists('fileData.pff')) {
-			$filearray = file('fileData.pff');
+		if (file_exists('recursos/fileData.pff')) {
+			$filearray = file('recursos/fileData.pff');
 			if (!empty($fileList)) {
 				if ($filearray) {
 					while (list($var, $val) = each($filearray)) {
@@ -195,7 +231,8 @@
 						if (isset($val) && trim($val) != "") {
 							$datos_lista = explode("||", trim($val));
 							if (count($datos_lista)>2 && in_array($datos_lista[0], $fileList)) {
-								$tabla .= "<tr>
+								if ($keyWord == null) {
+									$tabla .= "<tr>
 						 					<td><a href='$user/$datos_lista[0]'>$datos_lista[0]</a></td>
 						 					<td>$datos_lista[1]</td>
 						 					<td>$datos_lista[2]</td>
@@ -204,10 +241,27 @@
 						 					<td>$datos_lista[5]</td>
 						 					<td>$datos_lista[6]</td>
 						 					<td><button class='btn_delete' name='btnDeleteFile' value='$datos_lista[0]'>Eliminar</button></td>
+						 					<td><button class='btn_edit' name='btnEditFile' value='$datos_lista[0]'>Editar</button></td>
 											<td><button class='btn_share' name='btnShareFile' value='$datos_lista[0]'>Compartir</button></td>
 						 				</tr>";
+								}else{
+									$pos = strpos($val, $keyWord);
+									if ($pos !== false) {
+									    $tabla .= "<tr>
+							 					<td><a href='$user/$datos_lista[0]'>$datos_lista[0]</a></td>
+							 					<td>$datos_lista[1]</td>
+							 					<td>$datos_lista[2]</td>
+							 					<td>$datos_lista[3]</td>
+							 					<td>$datos_lista[4]</td>
+							 					<td>$datos_lista[5]</td>
+							 					<td>$datos_lista[6]</td>
+							 					<td><button class='btn_delete' name='btnDeleteFile' value='$datos_lista[0]'>Eliminar</button></td>
+							 					<td><button class='btn_edit' name='btnEditFile' value='$datos_lista[0]'>Editar</button></td>
+												<td><button class='btn_share' name='btnShareFile' value='$datos_lista[0]'>Compartir</button></td>
+							 				</tr>";
+									}
+								}
 							}
-							
 						}
 					}
 				}
@@ -216,12 +270,16 @@
 		
 		return $tabla;
 	}
+	/**
+	 * funcion que lee los datos de los archivos que son compartidos con algun usuario
+	 * @return string retorna la tabla con los datos de los archivos que han sido compartido con otros usuarios
+	 */
 	function readSharedFileData(){
 		$tabla = "";
 		$user = "";
 		$usuariosArray = array();
-		if (file_exists('fileShared.pff')) {
-			$sharedarray = file('fileShared.pff');
+		if (file_exists('recursos/fileShared.pff')) {
+			$sharedarray = file('recursos/fileShared.pff');
 			if ($sharedarray) {
 				while (list($var, $val) = each($sharedarray)) {
 					++$var;
@@ -235,8 +293,8 @@
 			}
 		}
 		
-		if (file_exists('fileData.pff')) {
-			$filearray = file('fileData.pff');
+		if (file_exists('recursos/fileData.pff')) {
+			$filearray = file('recursos/fileData.pff');
 			if ($filearray) {
 				while (list($var, $val) = each($filearray)) {
 					++$var;
@@ -252,7 +310,8 @@
 					 					<td>$datos_lista[5]</td>
 					 					<td>$datos_lista[6]</td>
 					 					<td></td>
-										<td>No se puede compartir</td>
+					 					<td></td>
+										<td></td>
 					 				</tr>";
 						}
 					}
@@ -316,7 +375,7 @@
 	function eliminar($fileUrl, $fileName){
 		if (unlink($fileUrl)) {
 			$arrayFilesData = array();
-			$filearray = file('fileData.pff');
+			$filearray = file('recursos/fileData.pff');
 			if ($filearray) {
 				while (list($var, $val) = each($filearray)) {
 					++$var;
@@ -327,7 +386,7 @@
 						}
 					}
 				}
-				$dataFiles = fopen('fileData.pff', "w");
+				$dataFiles = fopen('recursos/fileData.pff', "w");
 				foreach ($arrayFilesData as $value) {
 					if ($value != "") {
 						fwrite($dataFiles, $value);
@@ -345,26 +404,75 @@
 	 */
 	function getUserNames(){
 		$options = "";
-		$filearray = file("usersData.pff");
+		$filearray = file("recursos/usersData.pff");
 		if ($filearray) {
 			while (list($var, $val) = each($filearray)) {
 				++$var;
 				if (isset($val) && trim($val) != "") {
 					$datosUsuario = explode("||", trim($val));
 					if (count($datosUsuario) > 2) {
-						$options .= "<option value='$datosUsuario[2]'>$datosUsuario[0]"." "."$datosUsuario[1]</option>";
+						if ($datosUsuario[2] != $_SESSION['login']) {
+							$options .= "<option value='$datosUsuario[2]'>$datosUsuario[0]"." "."$datosUsuario[1]</option>";
+						}
 					}
 				}
 			}
 		}
 		return $options;
 	}
+	/**
+	 * funcion que escribe en un archivo en el cual se lleva el control de los archivos compartidos
+	 * @param  string $fileName nombre del archivo a compartir
+	 * @param  string $sharedTo nombre del usuario con el que se comparte el archivo
+	 * @param  string $owner    dueño del archivo que comparte el archivo
+	 * @return string           mensaje de retorno
+	 */
 	function shareFile($fileName, $sharedTo, $owner){
-		$dataFiles = fopen('fileShared.pff', "a");
+		$dataFiles = fopen('recursos/fileShared.pff', "a");
 		$data = $fileName . "||" . $sharedTo . "||". $owner.PHP_EOL;
 		fwrite($dataFiles, $data);
 		fclose($dataFiles);
 		return "Archivo compartido con exito!";
+	}
+	/**
+	 * funcion que actualiza la información de los archivos que se han subido
+	 * @param  string $oldFileName   nombre del archivo antiguo
+	 * @param  string $fileName      nuevo nombre que se le dara al archivo
+	 * @param  string $author        nuevo autor
+	 * @param  string $description   nueva descripcion
+	 * @param  string $clasification nueva clasificación
+	 * @return string                mensaje de retorno
+	 */
+	function updateFile($oldFileName, $fileName, $author, $description, $clasification){
+		$arrayFilesData = array();
+		$ext = pathinfo($oldFileName, PATHINFO_EXTENSION);
+		if (rename("./".$_SESSION['login']."/".$oldFileName, "./".$_SESSION['login']."/".$fileName.".".$ext)) {
+			$filearray = file('recursos/fileData.pff');
+			if ($filearray) {
+				while (list($var, $val) = each($filearray)) {
+					++$var;
+					if (isset($val) && trim($val) != "") {
+						$datos_lista = explode("||", trim($val));
+						if (count($datos_lista)>2 && $datos_lista[0] == $oldFileName) {
+							$arrayFilesData[] = "$fileName.$ext||$author||$datos_lista[2]||$datos_lista[3]||dogix3||$description||$clasification".PHP_EOL;
+						}else{
+							$arrayFilesData[] = $val;
+						}
+					}
+				}
+				$dataFiles = fopen('recursos/fileData.pff', "w");
+				foreach ($arrayFilesData as $value) {
+					if ($value != "") {
+						fwrite($dataFiles, $value);
+					}
+				}
+				fclose($dataFiles);
+			}
+			return "Archivo actualizado con exito!";
+		}else{
+			return "Error al actualizar!";
+		}
+		
 	}
 	#
 ?>
@@ -373,13 +481,14 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Manejo de archivos</title>
-	<link href="style.css" rel="stylesheet" type="text/css">
+	<link href="recursos/style.css" rel="stylesheet" type="text/css">
+
 </head>
 <body>
 	<main>
 	<?php if ($action == "register"):  ?>
 		<div id="register">
-			<h3>Registrarse<span class="ayuda">   <a href="#openHelpRegister"><img src="help.png"/></a></span></h3>
+			<h3>Registrarse<span class="ayuda">   <a href="#openHelpRegister"><img src="recursos/help.png"/></a></span></h3>
 			<form action="" method="post" id="form_register">
 				<input type="text" name="txtNombre" placeholder="Nombre">
 				<input type="text" name="txtApellido" placeholder="Apellido">
@@ -409,16 +518,17 @@
 				<input value="Cerrar sesión" class="btn btn_delete" type="submit" name="btnLogout">
 			</form>
 		</div><br>
-		<h2 class="t titulo"><img src="excel.png"/> Manejo de Archivos de Excel</h2>
+		<h2 class="t titulo"><img src="recursos/excel.png"/> Manejo de Archivos</h2>
 		<div id="manejo_archivos">
 			<div id="busqueda">
 				<form action="" method="post" id="form_search">
 					<input class="search" type="text" name="txtSearch" placeholder="Ingrese un nombre">
 					<input class="btn btn_buscar" type="submit" name="btnSearch" value="Buscar">
+					<input class="btn btn_buscar" type="submit" name="btnResetSearch" value="Restaurar valores">
 				</form>
 			</div>
 			<div class="frm_add">
-				<p>Agregar Archivos<span class="ayuda">   <a href="#openHelpAdd"><img src="help.png"/></a></span></p>
+				<p>Agregar Archivos<span class="ayuda">   <a href="#openHelpAdd"><img src="recursos/help.png"/></a></span></p>
 
 				<form enctype="multipart/form-data" method="post" action="" id="form_upload_file">
 				 	<input class="form_input" type="text" name="txtFileName" placeholder="Nombre de archivo">
@@ -433,7 +543,7 @@
 				</form>
 			</div>
 			<div class="frm_table">
-				<p>Mis Archivos<span class="ayuda">   <a href="#openHelpFiles"><img src="help.png"/></a></span></p>
+				<p>Mis Archivos<span class="ayuda">   <a href="#openHelpFiles"><img src="recursos/help.png"/></a></span></p>
 				<form action="" method="post" id="form_table">
 					<table id="files_details">
 						<thead>
@@ -446,11 +556,15 @@
 								<th>Descripción</th>
 								<th>Clasificación</th>
 								<th>Eliminar</th>
+								<th>Editar</th>
 								<th>Compartir</th>
 							</tr>
 						</thead>
 						<tbody>
-							<?php echo readFileData(); ?>
+							<?php
+								$keyWord = isset($_SESSION['keyWord']) ? $_SESSION['keyWord'] : null;
+								echo readFileData($keyWord);
+							?>
 							<?php echo readSharedFileData(); ?>
 						</tbody>
 					</table>
@@ -473,6 +587,25 @@
 					<div class="btn_modal">
 						<input type="submit" name="btnShare" value="Compartir">
 						<input class="btn_cancelar" type="submit" value="Cancelar">
+					</div>
+				</form>
+			</div>
+		</div>
+	<?php endif ?>
+	<?php if ($isEdit): ?>
+		<div id="openModal" class="modalDialog">
+			<div class="divModal modalEditar">
+				<h3>Actualizar Archivo</h3>
+				<form action="" method="post" id="form_edit">
+					<div class="btn_modal2">
+						<input class="" type="text" name="txtFileNameUpdate" placeholder="Nombre de archivo">
+				 		<input class="" type="text" name="txtAuthorUpdate" placeholder="Autor">
+				 		<input class="" type="text" name="txtDescripcionUpdate" placeholder="Descripción">
+				 		<input class="" type="text" name="txtFileClasificationUpdate" placeholder="Clasificación">
+				 		<div class="btn_modal">
+							<input type="submit" name="btnUpdate" value="Actualizar">
+							<input class="btn_cancelar" name="btnUpdateCancel" type="submit" value="Cancelar">
+						</div>
 					</div>
 				</form>
 			</div>
