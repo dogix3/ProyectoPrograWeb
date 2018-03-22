@@ -374,7 +374,6 @@
 	<meta charset="UTF-8">
 	<title>Manejo de archivos</title>
 	<link href="style.css" rel="stylesheet" type="text/css">
-
 </head>
 <body>
 	<main>
@@ -410,7 +409,7 @@
 				<input value="Cerrar sesión" class="btn btn_delete" type="submit" name="btnLogout">
 			</form>
 		</div><br>
-		<h2 class="t titulo">Manejo de Archivos</h2>
+		<h2 class="t titulo"><img src="excel.png"/> Manejo de Archivos de Excel</h2>
 		<div id="manejo_archivos">
 			<div id="busqueda">
 				<form action="" method="post" id="form_search">
